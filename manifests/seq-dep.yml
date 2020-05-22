@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: seq-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 3Gi
+  hostPath:
+    path: /mnt/data/seqv6/
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: seq-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seq-dep
+  labels:
+    app: seq
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: seq
+  template:
+    metadata:
+      labels:
+        app: seq 
+    spec:
+      volumes:
+        - name: seq-pv-storage
+          persistentVolumeClaim:
+            claimName: seq-pv-claim
+      containers:
+      - name: seq 
+        image: datalust/seq:preview
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: "/data"
+          name: seq-pv-storage
+        env:
+        - name: ACCEPT_EULA
+          value: "Y"

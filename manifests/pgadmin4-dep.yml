@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pgadmin4-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /var/lib/pgadmin4/data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pgadmin4-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgadmin4-dep
+  labels:
+    app: pgadmin4
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: pgadmin4
+  template:
+    metadata:
+      labels:
+        app: pgadmin4
+    spec:
+      volumes:
+        - name: pgadmin4-pv-storage
+          persistentVolumeClaim:
+            claimName: pgadmin4-pv-claim
+      containers:
+        - name: pgadmin4
+          image: dpage/pgadmin4
+          env:
+            - name: PGADMIN_DEFAULT_EMAIL
+              value: "admin@mydomain.com"
+            - name: PGADMIN_DEFAULT_PASSWORD
+              value: "P@ssw0rd!"
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: "/var/lib/pgadmin/data"
+              name: pgadmin4-pv-storage

@@ -1,0 +1,3 @@
+name: k8s
+runtime: nodejs
+description: Application that puts resources into our k8s cluster

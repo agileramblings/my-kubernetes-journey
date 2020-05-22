@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: identity-admin-svc
+spec:
+  selector:
+    app: identity-admin
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      nodePort: 9000

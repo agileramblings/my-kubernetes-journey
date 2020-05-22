@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kuard
+  namespace: default
+spec:
+  containers:
+  - name: kuard
+    image: gcr.io/kuar-demo/kuard-amd64:blue
+    ports:
+      - containerPort: 8080
+        name: http
+        protocol: TCP
+    imagePullPolicy: IfNotPresent
+  restartPolicy: Always

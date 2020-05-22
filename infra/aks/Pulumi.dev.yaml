@@ -1,0 +1,11 @@
+encryptionsalt: v1:<snipped>
+config:
+  aks:acrIdentitifer:
+    secure: v1:<snipped>
+  aks:acrResourceGroup:
+    secure: v1:<snipped>
+  aks:clusterFQDN: <snipped>.westus.cloudapp.azure.com
+  aks:password:
+    secure: v1:<snipped>
+  aks:sshPublicKey: ssh-rsa <snipped>
+    <snipped>

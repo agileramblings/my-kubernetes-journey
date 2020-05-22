@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity-sts-dep
+  labels:
+    app: identity-sts
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: identity-sts
+  template:
+    metadata:
+      labels:
+        app: identity-sts
+    spec:
+      containers:
+      - name: identity-sts
+        image: depthconsulting.azurecr.io/skoruba-identityserver4-sts-identity:latest
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Development"
+        - name: SEQ_URL
+          value: "http://seq-svc"
+        - name: ConnectionStrings__ConfigurationDbConnection
+          value: "User ID=admin;Password=P@ssw0rd!;Host=postgres-svc;Port=5432;Database=identity;Pooling=true;"
+        - name: ConnectionStrings__PersistedGrantDbConnection
+          value: "User ID=admin;Password=P@ssw0rd!;Host=postgres-svc;Port=5432;Database=identity;Pooling=true;"
+        - name: ConnectionStrings__IdentityDbConnection
+          value: "User ID=admin;Password=P@ssw0rd!;Host=postgres-svc;Port=5432;Database=identity;Pooling=true;"
+        - name: AdminConfiguration__IdentityAdminBaseUrl
+          value: http://127.0.0.1.xip.io:9000
+        - name: ASPNETCORE_URLS
+          value: "http://+:80"
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: docker-credentials

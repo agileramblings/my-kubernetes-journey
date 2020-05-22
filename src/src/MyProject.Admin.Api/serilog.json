@@ -1,0 +1,19 @@
+﻿{
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Debug"
+    },
+    "WriteTo": [
+      {
+
+        "Name": "Console",
+        "Args": { "outputTemplate": "[{Timestamp:o}][{Level:u4}][{SourceContext}] {Message}{NewLine}{Exception}" }
+
+      },
+      {
+        "Name": "Seq",
+        "Args": { "serverUrl": "http://seq:5341" }
+      }
+    ]
+  }
+}

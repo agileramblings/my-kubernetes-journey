@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: seq-svc
+spec:
+  selector:
+    app: seq
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      nodePort: 5341
