@@ -51,7 +51,7 @@ spec:
           image: dpage/pgadmin4
           env:
             - name: PGADMIN_DEFAULT_EMAIL
-              value: "admin@mydomain.com"
+              value: "admin@codingwithdave.xyz"
             - name: PGADMIN_DEFAULT_PASSWORD
               value: "P@ssw0rd!"
           ports:
